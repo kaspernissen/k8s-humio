@@ -1,0 +1,10 @@
+rbac:
+  create: true
+serviceAccount: 
+  create: true
+backend:
+  type: "es"
+  es:
+    host: "k8s-humio-es"
+    http_user: "<INSERT_INGEST_TOKEN>"
+    http_passwd: "none"

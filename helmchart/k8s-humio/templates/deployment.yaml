@@ -31,11 +31,16 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: es
+              containerPort: 9200
+              protocol: TCP
           env:
             - name: HUMIO_JVM_ARGS
               value: {{ .Values.humio.jvmArgs }}
             - name: AUTHENTICATION_METHOD
               value: {{ .Values.humio.authenticationMethod }}
+            - name: ELASTIC_PORT
+              value: "9200"
           livenessProbe:
             httpGet:
               path: /

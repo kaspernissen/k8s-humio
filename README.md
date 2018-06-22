@@ -36,7 +36,24 @@ This will spin up humio as a deployment in your minikube cluster, and further ex
 minikube service k8s-humio
 ```
 
-That's all.
+That's all needed to get Humio running.
+
+### Ship logs with fluent-bit from your cluster to humio
+
+When you deployed humio, you exposed two ports. One port is being exposed as `type=LoadBalancer` which enables you to access humio on a specific nodeport. Further the deployment created a service: `k8s-humio-es`. This service is used to ship logs to humios elasticsearch api. 
+
+To ship logs from your cluster. Go back to the project root. Edit the file `humio-agent.yaml` and insert the ingest token from you humio dataspace (docs: https://docs.humio.com/sending-data-to-humio/ingest-tokens/). You can just create a new dataspace and the token should be easy to find.
+
+Insert the token in the `backend.es.http_user`.
+
+Now deploy the fluent-bit `DaemonSet` using the official helm chart.
+
+```
+helm install stable/fluent-bit --name=humio-agent -f humio-agent.yaml --set on_minikube=true 
+```
+
+You should now be able to see logs coming into your dataspace in Humio.
+
 
 **Again, this is not ment for production usage, since it stores data on the minikube host.** 
 
