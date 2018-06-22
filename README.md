@@ -4,7 +4,7 @@ Simple helm chart for getting humio up and running in a minikube kubernetes clus
 
 **Be aware. This is not meant for production usage.**
 
-## Prerequisuites
+## Prerequisites
 
 In order to get this up and running, you need:
 * `minikube` (link: https://github.com/kubernetes/minikube)
@@ -42,8 +42,10 @@ That's all.
 
 ## Future development?
 * Support switching between environments
+* Support different storage options
 * More Humio configuration options 
 * Migrate to StatefulSet's
+* Probably much more stuff
 * ?
 
 ## Contribution
