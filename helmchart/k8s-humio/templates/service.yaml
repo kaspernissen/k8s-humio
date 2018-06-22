@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "k8s-humio.name" . }}
+  labels:
+    app: {{ template "k8s-humio.name" . }}
+    chart: {{ template "k8s-humio.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "k8s-humio.name" . }}
+    release: {{ .Release.Name }}

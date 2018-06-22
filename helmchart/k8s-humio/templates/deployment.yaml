@@ -1,0 +1,56 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "k8s-humio.name" . }}
+  labels:
+    app: {{ template "k8s-humio.name" . }}
+    chart: {{ template "k8s-humio.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "k8s-humio.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "k8s-humio.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+      - name: humio-data
+        hostPath:
+          path: '/data/humio'
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: HUMIO_JVM_ARGS
+              value: {{ .Values.humio.jvmArgs }}
+            - name: AUTHENTICATION_METHOD
+              value: {{ .Values.humio.authenticationMethod }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            limits:
+              cpu: {{ .Values.resources.cpuLimit }}
+              memory: {{ .Values.resources.memoryLimit }}
+            requests:
+              cpu: {{ .Values.resources.cpuRequest }}
+              memory: {{ .Values.resources.memoryRequest }}
+          volumeMounts:
+          - name: humio-data
+            mountPath: /data
