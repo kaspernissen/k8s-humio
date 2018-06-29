@@ -42,7 +42,7 @@ That's all needed to get Humio running.
 
 When you deployed humio, you exposed two ports. One port is being exposed as `type=LoadBalancer` which enables you to access humio on a specific nodeport. Further the deployment created a service: `k8s-humio-es`. This service is used to ship logs to humios elasticsearch api. 
 
-To ship logs from your cluster. Go back to the project root. Edit the file `humio-agent.yaml` and insert the ingest token from you humio dataspace (docs: https://docs.humio.com/sending-data-to-humio/ingest-tokens/). You can just create a new dataspace and the token should be easy to find.
+To ship logs from your cluster. Go back to the project root. Edit the file `humio-agent.yaml` and insert the ingest token from you humio repository (docs: https://docs.humio.com/sending-data-to-humio/ingest-tokens/). You can just create a new repository and the token should be easy to find.
 
 Insert the token in the `backend.es.http_user`.
 
