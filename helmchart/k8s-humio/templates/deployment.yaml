@@ -21,8 +21,12 @@ spec:
     spec:
       volumes:
       - name: humio-data
+      {{ if .Values.minikube }}
         hostPath:
           path: '/data/humio'
+      {{ else }}
+        emptyDir: {}
+      {{ end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
